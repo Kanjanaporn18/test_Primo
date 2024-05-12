@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #result {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Merge Collections</h2>
+    <label for="collection1">Collection 1 min to max (comma-separated):</label><br>
+    <input type="text" id="collection1" value="2,6,9"><br>
+    <label for="collection2">Collection 2 min to max (comma-separated):</label><br>
+    <input type="text" id="collection2" value="10,15,18"><br>
+    <label for="collection3">Collection 3 max to min (comma-separated):</label><br>
+    <input type="text" id="collection3" value="25,21,20"><br><br>
+    <button onclick="mergeCollections()">Merge</button>
+
+    <div id="result"></div>
+
+    <script>
+        function merge(collection1, collection2, collection3) {
+            let merged = [];
+            let i = 0, j = 0, k = 0;
+
+            // Merge until any of the arrays is exhausted
+            while (i < collection1.length || j < collection2.length || k < collection3.length) {
+                if (i < collection1.length && (j >= collection2.length || collection1[i] <= collection2[j]) && (k >= collection3.length || collection1[i] <= collection3[k])) {
+                    merged.push(collection1[i]);
+                    i++;
+                } else if (j < collection2.length && (i >= collection1.length || collection2[j] <= collection1[i]) && (k >= collection3.length || collection2[j] <= collection3[k])) {
+                    merged.push(collection2[j]);
+                    j++;
+                } else {
+                    merged.push(collection3[k]);
+                    k++;
+                }
+            }
+
+            return merged;
+        }
+
+        function mergeCollections() {
+            const collection1Input = document.getElementById("collection1").value.trim();
+            const collection2Input = document.getElementById("collection2").value.trim();
+            const collection3Input = document.getElementById("collection3").value.trim();
+
+            const collection1 = collection1Input.split(",").map(Number);
+            const collection2 = collection2Input.split(",").map(Number);
+            const collection3 = collection3Input.split(",").map(Number);
+
+            // Reverse collection3
+            collection3.reverse();
+
+            const merged = merge(collection1, collection2, collection3);
+            const resultDiv = document.getElementById("result");
+            resultDiv.textContent = "Merged Collection: " + merged.join(", ");
+        }
+    </script>
+</body>
+</html>
